@@ -38,43 +38,42 @@ VERSION — версия протокола (актуальная версия 1
 
 #### Пример HTTP-взаимодействия
 
-Запрос:
-GET /index.php HTTP/1.1
-Host: example.com
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9b5) Gecko/2008050509 Firefox/3.0b5
-Accept: text/html
-Connection: close
+>> Запрос:
+- GET /index.php HTTP/1.1
+- Host: example.com
+- User-Agent: Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9b5) - Gecko/2008050509 Firefox/3.0b5
+- Accept: text/html
+- Connection: close
 
 Первая строка — это строка запроса
 остальные — заголовки
 тело сообщения отсутствует
 
-Ответ:
->>HTTP/1.0 200 OK
->>Server: nginx/0.6.31
->>Content-Language: ru
->>Content-Type: text/html; charset=utf-8
->>Content-Length: 1234
->>Connection: close
----
+>> Ответ:
+- HTTP/1.0 200 OK
+- Server: nginx/0.6.31
+- Content-Language: ru
+- Content-Type: text/html; charset=utf-8
+- Content-Length: 1234
+- Connection: close
+
 ... САМА HTML-СТРАНИЦА ...
 ---
 
 ## Ресурсы и методы
 
-URI - Uniform Resource Identifier — единообразный идентификатор ресурса. 
+**URI - Uniform Resource Identifier — единообразный** идентификатор ресурса. 
 
 Ресурс — это файл на сервере (пример URI в данном случае '/styles.css'), также ресурс может быть какой-либо абстрактный объект ('/blogs/webdev/' — указывает на блок «Веб-разработка», а не на конкретный файл).
----
-Тип HTTP-запроса (HTTP-метод) указывает серверу на то, какое действие мы хотим произвести с ресурсом.
+
+***Тип HTTP-запроса (HTTP-метод)*** указывает серверу на то, какое действие мы хотим произвести с ресурсом.
 Изначально (в начале 90-х) предполагалось, что клиент может хотеть от ресурса только одно — получить его, однако сейчас по протоколу HTTP можно создавать посты, редактировать профиль, удалять сообщения и многое другое. И эти действия сложно объединить термином «получение».
----
 
 Для разграничения действий с ресурсами на уровне HTTP-методов и были придуманы следующие варианты:
-GET — получение ресурса
-POST — создание ресурса
-PUT — обновление ресурса
-DELETE — удаление ресурса
+*GET* — получение ресурса
+*POST* — создание ресурса
+*PUT* — обновление ресурса
+*DELETE *— удаление ресурса
 
 Спецификация HTTP не обязывает сервер понимать все методы (которых на самом деле гораздо больше, чем 4) — обязателен только GET, а также не указывает серверу, что он должен делать при получении запроса с тем или иным методом. 
 Это значит, что сервер 
@@ -82,9 +81,45 @@ DELETE — удаление ресурса
 - на запрос GET /index.php HTTP/1.1 не обязан возвращать страницу index.php, он может ее удалять, например :)
 
 
+
+<document.getElementById("get-jokes"). addEventListener("click", getJokes);>
+
+function getJokes (e) {
+  const numberOfJokes = document.getElementById("number").value;
+
+  const xhr = new XMLHttpRequest();
+
+  xhr.open("GET", `http://api.icndb.com/categories/${numberOfJokes}`, true);
+
+  xhr.onload = function() {
+    if(this.status === 200) {
+      const res = JSON.parse(this.response);
+
+      let output = "";
+      if(res.type === "success") {
+        res.value.forEach((item) => {
+          output += `<li>${item.joke}</li>`
+          
+        });
+      } else {
+        output += `<li>Error</li>`
+      }
+
+      document.getElementById("jokes").innerHTML = output;
+
+      console.log(res);
+    }
+  };
+
+  xhr.send();
+  e.preventDefault();
+}>
+
+
+
 ## REST
 
-REST (REpresentational State Transfer) 
+**REST (REpresentational State Transfer)** 
 Термин был введен в 2000-м году Роем Филдингом (Roy Fielding) — одним из разработчиков протокола HTTP — в качестве названия группы принципов построения веб-приложений. 
 
 REST охватывает более широкую область, нежели HTTP — его можно применять и в других сетях с другими протоколами. 
@@ -105,7 +140,7 @@ DELETE — удаляет.
 
 ### Проблемы?
 
-Да, есть небольшая проблема с применением REST на практике, т.е. HTML.
+Есть небольшая проблема с применением REST на практике, это  HTML.
 
 PUT/DELETE запросы можно отправлять посредством XMLHttpRequest, посредством обращения к серверу «вручную» (скажем, через curl или даже через telnet), но нельзя сделать HTML-форму, отправляющую полноценный PUT/DELETE-запрос.
 
