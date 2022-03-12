@@ -78,8 +78,9 @@ VERSION — версия протокола (актуальная версия 1
 Спецификация HTTP не обязывает сервер понимать все методы (которых на самом деле гораздо больше, чем 4) — обязателен только GET, а также не указывает серверу, что он должен делать при получении запроса с тем или иным методом. 
 Это значит, что сервер 
 - в ответ на запрос DELETE /index.php HTTP/1.1 не обязан удалять страницу index.php на сервере, 
-- на запрос GET /index.php HTTP/1.1 не обязан возвращать страницу index.php, он может ее удалять, например :)
+- на запрос GET /index.php HTTP/1.1 не обязан возвращать страницу index.php, он может ее удалять.
 
+>> Пример кода c внешним API
 
 
         document.getElementById("get-jokes"). addEventListener("click", getJokes);
@@ -137,6 +138,50 @@ GET — возвращает ресурс
 POST — создает новый
 PUT — обновляет существующий
 DELETE — удаляет.
+
+
+>> Пример кода c внешним API
+
+        const posts = [
+          {
+            title: "Post 1 title",
+            body: "Post 1 body text",
+          },
+          {
+            title: "Post 2 title",
+            body: "Post 2 body text",
+          },
+          {
+            title: "Post 3 title",
+            body: "Post 3 body text",
+          },
+        ];
+
+        function createPost(post, callback) {
+            setTimeout(() => {
+              posts.push(post);
+              callback();
+            }, 3000);
+          }
+
+        function getPosts() {
+            setTimeout(() => {
+              let output = "";
+          
+              posts.forEach((post) => {
+                output += `<li>${post.title}</li>`;
+              });
+          
+          document.body.innerHTML = output;
+          }, 1000);
+        }
+
+        createPost({title: "Post 4 title", body: "Post 4 bosy text"}, getPosts);
+
+        getPosts();
+
+        console.log(posts);
+
 
 ### Проблемы?
 

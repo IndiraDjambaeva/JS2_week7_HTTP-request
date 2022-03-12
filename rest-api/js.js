@@ -138,4 +138,4 @@ createPost({title: "Post 4 title", body: "Post 4 bosy text"}, getPosts);
 
 getPosts();
 
-// console.log(posts);
+console.log(posts);
